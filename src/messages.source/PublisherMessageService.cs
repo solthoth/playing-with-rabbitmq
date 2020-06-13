@@ -3,22 +3,23 @@ using System.Threading;
 using EasyNetQ;
 using messages.core;
 
-namespace post_messages
+namespace messages.source
 {
-    public class PubSubMessageService
+    public class PublisherMessageService
     {
         private readonly string ConnectionString;
-        public PubSubMessageService(string connectionString)
+        public PublisherMessageService(string connectionString)
         {
             ConnectionString = connectionString;
         }
         internal void CreateMessages()
         {
-            using(var bus = RabbitHutch.CreateBus(ConnectionString))
+            using (var bus = RabbitHutch.CreateBus(ConnectionString))
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    bus.Publish(new Notification {
+                    bus.Publish(new Notification
+                    {
                         QueueType = $"PubSub-{i}",
                         Message = $"HelloWorld {DateTime.Now}"
                     });
